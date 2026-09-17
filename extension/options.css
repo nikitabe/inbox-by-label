@@ -1,0 +1,12 @@
+:root{color-scheme:light dark;font-family:system-ui,sans-serif;background:light-dark(#f3f5f8,#17202b);color:light-dark(#202b38,#e8eef5)}body{margin:0}main{max-width:720px;margin:48px auto;padding:0 24px 48px}.eyebrow{font-size:12px;letter-spacing:.12em;color:light-dark(#43618b,#91b7ec)}h1{font-size:38px;letter-spacing:-1px;margin:10px 0}.intro{font-size:18px;line-height:1.5}section{background:light-dark(white,#243141);padding:24px;margin:20px 0;border-radius:16px;border:1px solid light-dark(#dce3ec,#394758)}h2{font-size:19px;margin-top:0}p,li{line-height:1.6}li{margin:10px 0}code{font-size:12px;overflow-wrap:anywhere}a{color:light-dark(#165caf,#a2c5ff)}label{display:block;margin:16px 0 8px;font-weight:600}input,select{box-sizing:border-box;width:100%;padding:12px;border:1px solid #99a5b3;border-radius:8px;font:inherit}button{padding:11px 16px;border:0;border-radius:8px;background:#2465c5;color:white;font:inherit;cursor:pointer;margin-top:12px}.secondary{background:light-dark(#e8eef7,#475970);color:inherit}.actions{display:flex;gap:12px;flex-wrap:wrap}button:disabled{opacity:.55;cursor:wait}summary{cursor:pointer;font-weight:600}footer{font-size:13px;opacity:.85}.label-row{display:flex;gap:10px;align-items:center;padding:8px 0}.dot{height:12px;width:12px;border-radius:3px}.count{margin-left:auto;font-variant-numeric:tabular-nums}#status{overflow-wrap:anywhere}
+:root { accent-color: #2465c5; }
+input[type="checkbox"] { width:18px; height:18px; padding:0; flex-shrink:0; }
+.check-label, .label-selection { display:flex; align-items:center; gap:10px; }
+.check-label { font-weight:400; }
+.label-selection { margin:0; min-width:0; flex:1; font-weight:400; cursor:pointer; }
+.label-selection span:last-child { overflow-wrap:anywhere; }
+.dot { flex-shrink:0; }
+.order-button { margin:0; padding:7px 10px; }
+.order-button:disabled { cursor:default; }
+#label-status { min-height:1.6em; }
+@media(max-width:480px) { main{padding:0 12px 24px}section{padding:16px}.label-row{gap:6px}.order-button{padding:7px}.label-selection{gap:6px} }
