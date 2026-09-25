@@ -42,3 +42,5 @@ Run `npm test` before submitting changes. Use synthetic fixtures; do not attach 
 ## License
 
 MIT. Independent project; not affiliated with or endorsed by Google or Gmail.
+
+Labels with unread inbox mail appear in bold at the top of the sidebar. Your chosen order is preserved within each group. This updates on count refresh; stale or unavailable counts do not imply unread status.

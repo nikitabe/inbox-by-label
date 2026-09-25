@@ -25,6 +25,13 @@
     if (cls) element.className = cls;
     return element;
   }
+  function hasUnread(row, mode, stale) {
+    return !stale && Number.isFinite(row.unread?.[mode]) && row.unread[mode] > 0;
+  }
+  function unreadFirst(rows, mode, stale) {
+    // Stable sort preserves the user's order within the unread and read groups.
+    return [...rows].sort((a, b) => Number(hasUnread(b, mode, stale)) - Number(hasUnread(a, mode, stale)));
+  }
   function render() {
     // Gmail owns every child in its native label lists. Mount alongside the
     // entire navigation tree, never among .TK/.aim/.TO rows: Gmail reconciles
@@ -40,7 +47,7 @@
       .sort((a, b) => (order.get(a.id) ?? Infinity) - (order.get(b.id) ?? Infinity));
     if (!host?.isConnected) {
       host = create('section'); host.id = ID;
-      host.dataset.iblVersion = '0.2.0';
+      host.dataset.iblVersion = '0.2.1';
       signature = null;
     }
     if (host.parentElement !== nativeSidebar.parentElement || host.nextElementSibling !== nativeSidebar) {
@@ -65,10 +72,11 @@
       return;
     }
     const mode = state.countMode || 'conversations';
-    const visible = selected.filter(row => !preferences.hideEmpty || stale || row[mode] !== 0);
+    const visible = unreadFirst(selected, mode, stale).filter(row => !preferences.hideEmpty || stale || row[mode] !== 0);
     if (!visible.length) host.append(create('p', selected.length ? 'No matching labels have inbox mail.' : 'No labels selected. Change the prefix or selections in settings.', 'ibl-status'));
     for (const row of visible) {
       const link = create('a', null, 'ibl-row');
+      if (hasUnread(row, mode, stale)) link.classList.add('ibl-unread');
       const query = `in:inbox label:"${row.name.toLowerCase().replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
       const searchHash = '#search/' + encodeURIComponent(query);
       link.href = location.pathname + searchHash;
