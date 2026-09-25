@@ -7,7 +7,7 @@ Turn your Gmail labels into inbox-only views, with **unread / total** counts.
 - Include all custom labels, or filter by a label-name prefix.
 - Choose labels, arrange their order, and optionally hide empty ones.
 - Keep Gmail's original label controls available.
-- Counts refresh approximately every minute, on returning to Gmail, or with Refresh.
+- Counts refresh approximately every minute while Gmail is visible, when you open or return to Gmail, or with Refresh. No scheduled background refresh runs when Gmail is closed.
 
 ## Status
 

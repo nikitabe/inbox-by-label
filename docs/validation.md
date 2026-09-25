@@ -8,3 +8,10 @@
 - Promotional tile visually inspected.
 
 Still required before Store review: final production OAuth configuration, authorization in an actual test Gmail account with the Store identity, actual Gmail screenshots, publisher details, published privacy policy/homepage, Google OAuth verification and Store review. The bootstrap build cannot connect to Google and must never be submitted as the finished release.
+
+
+## Version 0.2.2 — remove alarms
+
+Removed the alarms permission and all alarm scheduling/listeners. Counts are requested when Gmail is visible on load, focus, visibility restoration, navigation, and every 60 seconds while visible. Manual refresh and explicit settings actions remain available; the existing worker request throttle remains in place. No recurring worker alarm is used. A refresh already in progress may finish after leaving Gmail.
+
+Automated tests cover visible-tab refresh, hidden-tab suppression, resume, background-tab startup and alarm removal in both personal and public builds. Both builds pass JavaScript syntax checks. Live installed-extension validation still requires reload.

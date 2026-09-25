@@ -69,9 +69,6 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes.labelSettings &&
       labelPreferences(changes.labelSettings.oldValue).prefix !== labelPreferences(changes.labelSettings.newValue).prefix) void sync();
 });
-chrome.alarms.onAlarm.addListener(alarm => {if (alarm.name === 'refresh') void sync();});
-chrome.runtime.onInstalled.addListener(() => chrome.alarms.create('refresh', {periodInMinutes: 1}));
-chrome.runtime.onStartup.addListener(() => chrome.alarms.create('refresh', {periodInMinutes: 1}));
 chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
 chrome.runtime.onMessage.addListener((message, sender, reply) => {
   if (sender.id !== chrome.runtime.id) return;
@@ -91,7 +88,6 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     } else if (message.type === 'connect' && optionsSender) {
       await token(true);
       await chrome.storage.local.set({enabled: true, error: null});
-      await chrome.alarms.create('refresh', {periodInMinutes: 1});
       await sync();
       const {error} = await chrome.storage.local.get('error');
       if (error) throw new Error(error);

@@ -47,7 +47,7 @@
       .sort((a, b) => (order.get(a.id) ?? Infinity) - (order.get(b.id) ?? Infinity));
     if (!host?.isConnected) {
       host = create('section'); host.id = ID;
-      host.dataset.iblVersion = '0.2.1';
+      host.dataset.iblVersion = '0.2.2';
       signature = null;
     }
     if (host.parentElement !== nativeSidebar.parentElement || host.nextElementSibling !== nativeSidebar) {
@@ -119,9 +119,16 @@
   new MutationObserver(mutations => {
     if (mutations.some(m => !host?.contains(m.target) && m.target !== host)) schedule();
   }).observe(document.documentElement, {subtree: true, childList: true});
-  window.addEventListener('hashchange', () => {schedule(); void send('refresh');});
-  window.addEventListener('focus', () => {schedule(); void send('refresh');});
-  document.addEventListener('visibilitychange', () => {if (!document.hidden) {schedule(); void send('refresh');}});
+  function refreshVisible() {
+    // Background tabs do not request counts; returning to Gmail refreshes them.
+    if (document.hidden) return;
+    schedule();
+    void send('refresh');
+  }
+  window.addEventListener('hashchange', refreshVisible);
+  window.addEventListener('focus', refreshVisible);
+  document.addEventListener('visibilitychange', refreshVisible);
   setInterval(schedule, 30000);
-  void send('refresh');
+  setInterval(refreshVisible, 60000);
+  refreshVisible();
 })();

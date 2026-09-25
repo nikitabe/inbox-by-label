@@ -26,7 +26,7 @@ Inbox by label adds a section above Gmail's normal navigation. Click a label to 
 • Select and reorder the labels you want to see.
 • Optionally hide labels with no inbox mail.
 • Keep Gmail's original label controls available.
-• Refresh counts manually or let them update approximately every minute.
+• Refresh counts manually or let them update approximately every minute while Gmail is visible. Counts also refresh when you open or return to Gmail.
 
 Connect your Google account, choose your labels, and open Gmail. Reading mail reduces the unread count; archiving removes it from the inbox totals after refresh.
 
@@ -44,7 +44,6 @@ Display inbox-only Gmail label views and their unread/total counts in the Gmail 
 
 identity: Authenticate the user with Google to calculate Gmail inbox counts.
 storage: Store label preferences, connected account email, cached aggregate counts, and connection status locally.
-alarms: Refresh counts approximately every minute.
 gmail.googleapis.com: Read Gmail profile email, custom label metadata, and matching message/thread IDs to calculate exact counts across all result pages.
 mail.google.com content script: Insert the sidebar, confirm the visible active account, and open inbox-only label searches.
 gmail.metadata OAuth scope: List labels and message/thread IDs using INBOX, custom label, and UNREAD filters. No narrower Gmail scope provides these counting operations.
