@@ -62,7 +62,7 @@ test('custom order follows stable IDs after renaming; newly discovered labels ar
   assert.deepEqual(rows.map(row => row.id),['b','a','c']);
   assert.deepEqual(orderedLabels(rows,{order:['a','b']}).map(row=>row.id),['a','b','c']);
   assert.equal(labelPreferences().prefix,'');
-  assert.equal(labelPreferences().hideEmpty,false);
+  assert.equal(labelPreferences().hideEmpty,true);
 });
 
 test('all read inbox mail has zero unread and retains its total', async () => {

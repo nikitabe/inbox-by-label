@@ -20,9 +20,9 @@ test('unread labels move first, keeping custom order within both groups', () => 
   }
   assert.deepEqual(rows.map(r=>r.id),['read','few','unknown','many']);
 });
-test('stale counts preserve custom order and do not bold rows', () => {
-  assert.deepEqual(Array.from(unreadFirst(rows,'conversations',true),r=>r.id),rows.map(r=>r.id));
-  assert.equal(hasUnread(rows[1],'conversations',true),false);
+test('saved counts preserve unread grouping while refreshing', () => {
+  assert.deepEqual(Array.from(unreadFirst(rows,'conversations',true),r=>r.id),['few','many','read','unknown']);
+  assert.equal(hasUnread(rows[1],'conversations',true),true);
 });
 test('reading the last unread message returns its label to the read group', () => {
   const updated = rows.map(r=>r.id==='few'?{...r,unread:{conversations:0,messages:0}}:r);

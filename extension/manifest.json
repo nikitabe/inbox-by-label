@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Inbox by label",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Open Gmail labels as inbox-only views, with unread / total counts and configurable label selection.",
   "minimum_chrome_version": "120",
   "permissions": [

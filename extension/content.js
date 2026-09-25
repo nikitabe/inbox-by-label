@@ -26,11 +26,17 @@
     return element;
   }
   function hasUnread(row, mode, stale) {
-    return !stale && Number.isFinite(row.unread?.[mode]) && row.unread[mode] > 0;
+    return Number.isFinite(row.unread?.[mode]) && row.unread[mode] > 0;
   }
   function unreadFirst(rows, mode, stale) {
     // Stable sort preserves the user's order within the unread and read groups.
     return [...rows].sort((a, b) => Number(hasUnread(b, mode, stale)) - Number(hasUnread(a, mode, stale)));
+  }
+  function showRow(row, mode, hideEmpty) {
+    return hideEmpty === false || row[mode] !== 0;
+  }
+  function formatCount(value) {
+    return Number.isFinite(value) ? value.toLocaleString() : '—';
   }
   function render() {
     // Gmail owns every child in its native label lists. Mount alongside the
@@ -47,7 +53,7 @@
       .sort((a, b) => (order.get(a.id) ?? Infinity) - (order.get(b.id) ?? Infinity));
     if (!host?.isConnected) {
       host = create('section'); host.id = ID;
-      host.dataset.iblVersion = '0.2.2';
+      host.dataset.iblVersion = '0.2.3';
       signature = null;
     }
     if (host.parentElement !== nativeSidebar.parentElement || host.nextElementSibling !== nativeSidebar) {
@@ -72,7 +78,7 @@
       return;
     }
     const mode = state.countMode || 'conversations';
-    const visible = unreadFirst(selected, mode, stale).filter(row => !preferences.hideEmpty || stale || row[mode] !== 0);
+    const visible = unreadFirst(selected, mode, stale).filter(row => showRow(row, mode, preferences.hideEmpty));
     if (!visible.length) host.append(create('p', selected.length ? 'No matching labels have inbox mail.' : 'No labels selected. Change the prefix or selections in settings.', 'ibl-status'));
     for (const row of visible) {
       const link = create('a', null, 'ibl-row');
@@ -92,16 +98,16 @@
       const tag = create('span', null, 'ibl-tag'); tag.style.background = row.color;
       const name = create('span', row.name, 'ibl-name');
       const total = row[mode], unread = row.unread?.[mode];
-      const format = value => row.missing || stale || !Number.isFinite(value) ? '—' : value.toLocaleString();
+      const format = value => row.missing ? '—' : formatCount(value);
       const count = create('span', `${format(unread)} / ${format(total)}`, 'ibl-count');
-      link.title = row.missing ? 'Label not found' : stale ? 'Counts need refreshing' : !Number.isFinite(unread) ? 'Unread count is loading; unread / total inbox counts' : `${unread} unread / ${total} total inbox ${mode}`;
+      link.title = row.missing ? 'Label not found' : stale ? `Last saved counts from ${new Date(snapshot.updatedAt).toLocaleString()}: ${format(unread)} unread / ${format(total)} total inbox ${mode}` : !Number.isFinite(unread) ? 'Unread count is loading; unread / total inbox counts' : `${unread} unread / ${total} total inbox ${mode}`;
       link.setAttribute('aria-label', `${row.name}: ${link.title}`);
       if (row.missing) { link.removeAttribute('href'); link.setAttribute('aria-disabled', 'true'); }
       if (location.hash === new URL(link.href || location.href).hash && !row.missing) link.setAttribute('aria-current', 'page');
       link.append(tag, name, count); host.append(link);
     }
     const footer = create('div', null, 'ibl-footer');
-    const status = create('span', state.error ? 'Refresh failed' : stale ? 'Counts out of date' : `Unread / total · ${mode}`, 'ibl-status');
+    const status = create('span', state.error ? 'Refresh failed · saved counts' : stale ? 'Saved counts · refresh needed' : `Unread / total · ${mode}`, 'ibl-status');
     status.title = state.error || `Updated ${new Date(snapshot.updatedAt).toLocaleTimeString()}`;
     const refresh = create('button', '↻', 'ibl-button'); refresh.title = 'Refresh inbox counts'; refresh.setAttribute('aria-label', refresh.title);
     refresh.onclick = async () => { refresh.disabled = true; await send('refresh'); refresh.disabled = false; };

@@ -45,9 +45,9 @@ async function render() {
     const text = document.createElement('span'); text.textContent = row.name;
     const count = document.createElement('span'); count.className = 'count';
     const mode = state.countMode || 'conversations';
-    const format = value => stale || !Number.isFinite(value) ? '—' : value.toLocaleString();
+    const format = value => !Number.isFinite(value) ? '—' : value.toLocaleString();
     count.textContent = `${format(row.unread?.[mode])} / ${format(row[mode])}`;
-    count.title = 'Unread / total inbox counts';
+    count.title = stale ? `Last saved counts from ${new Date(state.snapshot.updatedAt).toLocaleString()}` : 'Unread / total inbox counts';
     selection.append(checkbox, dot, text); div.append(selection, count);
     for (const [offset, title, symbol] of [[-1, 'up', '↑'], [1, 'down', '↓']]) {
       const button = document.createElement('button'); button.className = 'secondary order-button'; button.textContent = symbol;

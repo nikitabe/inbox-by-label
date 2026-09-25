@@ -1,7 +1,7 @@
-const LABELS = [['Action','#ffad47'],['Needs reply','#ff5034']];
+const LABELS = [['Action','#ffad47'],['Needs reply','#ff5034'],['Empty','#aaaaaa']];
 let state, listeners = [];
 function initial() {
-  return {enabled:true, countMode:'conversations', snapshot:{email:'demo@example.com',updatedAt:Date.now(),rows:LABELS.map(([name,color],i)=>({name,color,id:'l'+i,conversations:[24,57,8,19,4,12,6,0,81][i],messages:100+i,unread:{conversations:[3,8][i],messages:[5,10][i]}}))}};
+  return {enabled:true, countMode:'conversations', snapshot:{email:'demo@example.com',updatedAt:Date.now(),rows:LABELS.map(([name,color],i)=>({name,color,id:'l'+i,conversations:[24,57,0][i],messages:[100,101,0][i],unread:{conversations:[3,8,0][i],messages:[5,10,0][i]}}))}};
 }
 state=initial();
 window.chrome = {runtime:{id:'fixture',sendMessage:async () => ({ok:true})},storage:{local:{get:async () => state},onChanged:{addListener:listener=>listeners.push(listener)}}};
@@ -20,3 +20,5 @@ const script=document.createElement('script');script.src='../extension/content.j
 
 let rounds=0;const original=sidebar.innerHTML;const report=document.createElement('p');report.id='regression';document.body.append(report);
 const stress=setInterval(()=>{sidebar.innerHTML=original;publish({...state,snapshot:{...state.snapshot,updatedAt:Date.now()}});rounds++;if(rounds===20){clearInterval(stress);setTimeout(()=>{const host=document.getElementById('inbox-by-label');report.textContent=host?.nextElementSibling===native && !native.contains(host) && sidebar.innerHTML===original && document.querySelectorAll('#inbox-by-label').length===1 ? 'PASS: 20 native sidebar rebuilds; no native rows changed; one independent section.' : 'FAIL: sidebar isolation';},500);}},300);
+
+const oldButton=document.createElement('button');oldButton.textContent='Simulate expired counts';document.querySelector('.details').append(oldButton);oldButton.onclick=()=>publish({...state,snapshot:{...state.snapshot,updatedAt:Date.now()-600000}});

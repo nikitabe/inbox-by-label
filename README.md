@@ -43,4 +43,6 @@ Run `npm test` before submitting changes. Use synthetic fixtures; do not attach 
 
 MIT. Independent project; not affiliated with or endorsed by Google or Gmail.
 
-Labels with unread inbox mail appear in bold at the top of the sidebar. Your chosen order is preserved within each group. This updates on count refresh; stale or unavailable counts do not imply unread status.
+Labels with unread inbox mail appear in bold at the top of the sidebar. Your chosen order is preserved within each group. This updates on count refresh; saved counts retain their unread grouping while a refresh runs; unavailable counts do not imply unread status.
+
+Empty labels are hidden by default using their last successful inbox totals; turn this off in settings if desired. Last successful counts stay visible when out of date or when a refresh fails, with a saved-count notice and timestamp in the tooltip. Unknown counts remain dashes.

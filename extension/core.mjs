@@ -11,7 +11,7 @@ export const DEFAULT_PREFIX = '';
 export function labelPreferences(value = {}) {
   return {prefix: typeof value.prefix === 'string' ? value.prefix.trim() : DEFAULT_PREFIX,
     excludedIds: Array.isArray(value.excludedIds) ? value.excludedIds : [],
-    order: Array.isArray(value.order) ? value.order : [], hideEmpty: value.hideEmpty === true};
+    order: Array.isArray(value.order) ? value.order : [], hideEmpty: value.hideEmpty !== false};
 }
 export function orderedLabels(rows, preferences = {}) {
   const {order} = labelPreferences(preferences);
